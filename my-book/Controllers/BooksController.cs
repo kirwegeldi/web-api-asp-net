@@ -48,6 +48,5 @@ namespace my_book.Controllers
             _booksService.DeleteBookById(id);
             return Ok();
         }
-
     }
 }

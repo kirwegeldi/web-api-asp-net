@@ -51,7 +51,7 @@ namespace my_book.Data.Services
             }
             return _book;
         }
-        public Book DeleteBookById(int bookId)
+        public void DeleteBookById(int bookId)
         {
             Book _book = GetBookById(bookId);
             if (_book != null)
@@ -59,8 +59,6 @@ namespace my_book.Data.Services
                 _context.Remove(_book);
                 _context.SaveChanges();
             }
-            return _book;
         }
-
     }
 }
