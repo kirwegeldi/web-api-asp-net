@@ -34,7 +34,6 @@ namespace my_book.Data.Services
         }
         public List<Book> GetAllBooks() => _context.Books.ToList();  //return _context.Books.ToList();
         public Book GetBookById(int bookId) => _context.Books.FirstOrDefault(n => n.Id == bookId);
-
         public Book UpdateBookById(int bookId, BookVM book)
         {
             var _book = _context.Books.FirstOrDefault(n => n.Id == bookId);
@@ -52,5 +51,16 @@ namespace my_book.Data.Services
             }
             return _book;
         }
+        public Book DeleteBookById(int bookId)
+        {
+            Book _book = GetBookById(bookId);
+            if (_book != null)
+            {
+                _context.Remove(_book);
+                _context.SaveChanges();
+            }
+            return _book;
+        }
+
     }
 }
