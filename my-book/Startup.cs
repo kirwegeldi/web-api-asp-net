@@ -31,12 +31,13 @@ namespace my_book
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             //Configure DBcontext with SQL
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(ConnectionString));
             //configure services
             services.AddTransient<BooksService>();
+            services.AddTransient<AuthorsService>();
+            services.AddTransient<PublisherService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v2", new OpenApiInfo { Title = "my_book_updated_title", Version = "v2" });
@@ -64,7 +65,7 @@ namespace my_book
                 endpoints.MapControllers();
             });
 
-            AppDbInitializer.Seed(app);
+            //AppDbInitializer.Seed(app);
         }
     }
 }
