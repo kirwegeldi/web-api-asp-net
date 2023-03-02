@@ -39,12 +39,28 @@ namespace my_book.Data.Services
                     BookId = _book.Id,
                     AuthorId = id
                 };
+                //_book.Book_Authors.Add(_context.Books_Authors.FirstOrDefault(n => n.Id == id));
                 _context.Books_Authors.Add(_book_author);
                 _context.SaveChanges();
             }
         }
         public List<Book> GetAllBooks() => _context.Books.ToList();  //return _context.Books.ToList();
-        public Book GetBookById(int bookId) => _context.Books.FirstOrDefault(n => n.Id == bookId);
+        public BookWithAuthorsVM GetBookById(int bookId) 
+        {
+            var _bookWithAuthors = _context.Books.Where(n => n.Id == bookId).Select(n => new BookWithAuthorsVM()
+            {
+                Title = n.Title,
+                Description = n.Description,
+                IsRead = n.IsRead,
+                DateRead = n.IsRead ? n.DateRead.Value : null,
+                Rate = n.IsRead ? n.Rate.Value : null,
+                Genre = n.Genre,
+                CoverUrl = n.CoverUrl,
+                PublisherName = n.Publisher.Name,
+                AuthorNames = n.Book_Authors.Select(n => n.Author.FullName).ToList()
+            }).FirstOrDefault();
+            return _bookWithAuthors;
+        }
         public Book UpdateBookById(int bookId, BookVM book)
         {
             var _book = _context.Books.FirstOrDefault(n => n.Id == bookId);
@@ -63,7 +79,7 @@ namespace my_book.Data.Services
         }
         public void DeleteBookById(int bookId)
         {
-            Book _book = GetBookById(bookId);
+            var _book = _context.Books.FirstOrDefault(n => n.Id == bookId);
             if (_book != null)
             {
                 _context.Remove(_book);
