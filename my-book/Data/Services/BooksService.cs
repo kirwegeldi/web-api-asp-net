@@ -44,7 +44,26 @@ namespace my_book.Data.Services
                 _context.SaveChanges();
             }
         }
-        public List<Book> GetAllBooks() => _context.Books.ToList();  //return _context.Books.ToList();
+        public List<BookWithAuthorsVM> GetAllBooks()
+        {
+            var _allBooks = _context.Books.Select(n => new BookWithAuthorsVM()
+            {
+                Title = n.Title,
+                Description = n.Description,
+                IsRead = n.IsRead,
+                DateRead = n.IsRead ? n.DateRead.Value : null,
+                Rate = n.IsRead ? n.Rate.Value : null,
+                Genre = n.Genre,
+                CoverUrl = n.CoverUrl,
+                PublisherName = n.Publisher.Name,
+                AuthorNames = n.Book_Authors.Select(n => n.Author.FullName).ToList()
+            }).ToList();
+            return _allBooks;
+        }
+        
+        public Dictionary<int,string> GetAllBookIds() => _context.Books.ToDictionary(n => n.Id,n => n.Title);
+            
+
         public BookWithAuthorsVM GetBookById(int bookId) 
         {
             var _bookWithAuthors = _context.Books.Where(n => n.Id == bookId).Select(n => new BookWithAuthorsVM()
