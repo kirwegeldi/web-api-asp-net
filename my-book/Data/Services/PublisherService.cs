@@ -27,18 +27,9 @@ namespace my_book.Data.Services
             var _publisher = _context.Publishers.Where(n => n.Id == publishedId).Select(n => new PublisherWithBooksVM()
             {
                 Name = n.Name,
-                Books = n.Books.Select(book => new BookWithAuthorsVM()
-                {
-                    Title = book.Title,
-                    Description = book.Description,
-                    IsRead = book.IsRead,
-                    DateRead = book.IsRead ? book.DateRead.Value : null,
-                    Rate = book.IsRead ? book.Rate.Value : null,
-                    Genre = book.Genre,
-                    CoverUrl = book.CoverUrl,
-                    PublisherName = book.Publisher.Name,
-                    AuthorNames = book.Book_Authors.Select(n => n.Author.FullName).ToList()
-                    
+                BooksAndAuthors = n.Books.Select(n=> new BookAuthorVM(){
+                    BookTitle = n.Title,
+                    AuthorsName = n.Book_Authors.Select(n => n.Author.FullName).ToList()
                 }).ToList()
             }).FirstOrDefault();
             return _publisher;

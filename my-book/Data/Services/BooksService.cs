@@ -60,10 +60,7 @@ namespace my_book.Data.Services
             }).ToList();
             return _allBooks;
         }
-        
         public Dictionary<int,string> GetAllBookIds() => _context.Books.ToDictionary(n => n.Id,n => n.Title);
-            
-
         public BookWithAuthorsVM GetBookById(int bookId) 
         {
             var _bookWithAuthors = _context.Books.Where(n => n.Id == bookId).Select(n => new BookWithAuthorsVM()
