@@ -21,7 +21,6 @@ namespace my_book.Controllers
             _booksService.AddBookWithAuthors(book);
             return Ok();
         }
-
         [HttpGet("get-book-by-id/{id}")]
         public IActionResult GetBookById(int id)
         {
@@ -46,7 +45,6 @@ namespace my_book.Controllers
             var updatedBook = _booksService.UpdateBookById(id,book);
             return Ok(updatedBook);
         }
-
         [HttpDelete("delete-book-by-id/{id}")]
         public IActionResult DeleteBookById(int id)
         {
